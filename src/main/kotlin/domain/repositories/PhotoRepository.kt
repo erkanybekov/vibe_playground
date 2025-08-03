@@ -9,4 +9,6 @@ interface PhotoRepository {
     suspend fun deletePhoto(id: String): Boolean
     suspend fun getPhotosByTaskId(taskId: String): List<Photo>
     suspend fun getAllPhotos(): List<Photo>
+    suspend fun associatePhotoWithTask(photoId: String, taskId: String)
+    suspend fun removePhotoFromTask(photoId: String, taskId: String)
 }

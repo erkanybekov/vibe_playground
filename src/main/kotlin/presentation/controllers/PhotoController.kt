@@ -1,6 +1,7 @@
 package com.erkan.presentation.controllers
 
 import com.erkan.domain.usecases.*
+import com.erkan.domain.entities.Task
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -8,8 +9,15 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
 import io.ktor.utils.io.*
 import java.io.File
+
+@Serializable
+data class PhotoAssociationResponse(
+    val message: String,
+    val task: Task
+)
 
 class PhotoController(
     private val uploadPhotoUseCase: UploadPhotoUseCase,
@@ -205,9 +213,9 @@ class PhotoController(
                 return
             }
             
-            call.respond(HttpStatusCode.OK, mapOf(
-                "message" to "Photo associated with task successfully",
-                "task" to updatedTask
+            call.respond(HttpStatusCode.OK, PhotoAssociationResponse(
+                message = "Photo associated with task successfully",
+                task = updatedTask
             ))
             
         } catch (e: Exception) {

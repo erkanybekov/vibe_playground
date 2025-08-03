@@ -71,11 +71,15 @@ class PhotoRepositoryImpl(
         return photos.values.toList()
     }
     
-    fun associatePhotoWithTask(photoId: String, taskId: String) {
-        taskPhotos.getOrPut(taskId) { mutableListOf() }.add(photoId)
+    override suspend fun associatePhotoWithTask(photoId: String, taskId: String) {
+        withContext(Dispatchers.IO) {
+            taskPhotos.getOrPut(taskId) { mutableListOf() }.add(photoId)
+        }
     }
     
-    fun removePhotoFromTask(photoId: String, taskId: String) {
-        taskPhotos[taskId]?.remove(photoId)
+    override suspend fun removePhotoFromTask(photoId: String, taskId: String) {
+        withContext(Dispatchers.IO) {
+            taskPhotos[taskId]?.remove(photoId)
+        }
     }
 }

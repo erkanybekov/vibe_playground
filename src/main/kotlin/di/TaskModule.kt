@@ -22,8 +22,8 @@ object TaskModule {
     val getTaskByNameUseCase = GetTaskByNameUseCase(taskRepository)
     val addTaskUseCase = AddTaskUseCase(taskRepository)
     val updateTaskUseCase = UpdateTaskUseCase(taskRepository)
-    val addPhotoToTaskUseCase = AddPhotoToTaskUseCase(taskRepository)
-    val removePhotoFromTaskUseCase = RemovePhotoFromTaskUseCase(taskRepository)
+    val addPhotoToTaskUseCase = AddPhotoToTaskUseCase(taskRepository, photoRepository)
+    val removePhotoFromTaskUseCase = RemovePhotoFromTaskUseCase(taskRepository, photoRepository)
     val removeTaskUseCase = RemoveTaskUseCase(taskRepository)
     val removeTaskByNameUseCase = RemoveTaskByNameUseCase(taskRepository)
     

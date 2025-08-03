@@ -51,19 +51,31 @@ class UpdateTaskUseCase(private val taskRepository: TaskRepository) {
     }
 }
 
-class AddPhotoToTaskUseCase(private val taskRepository: TaskRepository) {
+class AddPhotoToTaskUseCase(
+    private val taskRepository: TaskRepository,
+    private val photoRepository: com.erkan.domain.repositories.PhotoRepository
+) {
     suspend fun execute(taskId: String, photo: Photo): Task? {
         val task = taskRepository.getTaskById(taskId) ?: return null
         val updatedTask = task.copy(photos = task.photos + photo)
-        return taskRepository.updateTask(updatedTask)
+        // persist in task repository
+        val savedTask = taskRepository.updateTask(updatedTask)
+        // update photo repository mapping as well (fire and forget if task not found)
+        photoRepository.associatePhotoWithTask(photo.id, taskId)
+        return savedTask
     }
 }
 
-class RemovePhotoFromTaskUseCase(private val taskRepository: TaskRepository) {
+class RemovePhotoFromTaskUseCase(
+    private val taskRepository: TaskRepository,
+    private val photoRepository: com.erkan.domain.repositories.PhotoRepository
+) {
     suspend fun execute(taskId: String, photoId: String): Task? {
         val task = taskRepository.getTaskById(taskId) ?: return null
         val updatedTask = task.copy(photos = task.photos.filter { it.id != photoId })
-        return taskRepository.updateTask(updatedTask)
+        val savedTask = taskRepository.updateTask(updatedTask)
+        photoRepository.removePhotoFromTask(photoId, taskId)
+        return savedTask
     }
 }
 

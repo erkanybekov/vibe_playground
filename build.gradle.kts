@@ -20,6 +20,8 @@ dependencies {
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.koin.ktor)
+    implementation(libs.koin.logger.slf4j)
     implementation("io.ktor:ktor-server-status-pages:2.3.7")
     implementation(libs.postgresql)
     implementation(libs.h2)
